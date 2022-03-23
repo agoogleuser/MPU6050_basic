@@ -98,3 +98,5 @@ inline float accel_read_z()
     float reading = (float)MPU_reg_read(GYRO_ZOUT_H, 2);
     return reading / accelConverter;
 }
+
+//TODO: add Functions to get the velocity and position.
