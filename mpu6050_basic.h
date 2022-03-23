@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #ifndef MPU6050_BASIC_H
 #define MPU6050_BASIC_H
 
@@ -84,9 +85,8 @@ void mpu_init();
 float gyro_read_x();
 float gyro_read_y();
 float gyro_read_z();
+float readAngle(char,bool);
 
 float accel_read_x();
 float accel_read_y();
 float accel_read_z();
-
-#endif
