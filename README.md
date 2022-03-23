@@ -2,6 +2,8 @@
 ## About:
 A MPU6050 driver I wrote that only reads sensor data from the MPU, for arduino nano , used for a Line Follower. My team only needed Gyroscope and Accelerometer Readings for the project, and most libraries were too big to fit all the project, So I wrote this library myself.
 
+**IMPORTANT: I Haven't tested this Library yet and the example needs to be re-written as of now**
+
 In this file, I will explain how to get started to use this library for your projects.
 
 ## Functions summary:
