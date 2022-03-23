@@ -6,7 +6,7 @@ static float milliOld_mpu = 0;
 static float milliNew_mpu = 0;
 static float dt = 0;
 
-//=======Essential Functions
+//=======Read and Write Functions.
 void MPU_reg_write(uint8_t regAdr, uint8_t regData)
 {
     Wire.beginTransmission(MPU_ADDRESS);
@@ -31,7 +31,7 @@ uint8_t MPU_reg_read(uint8_t regAdr, int num)
 }
 //=======MPU Initialization
 void mpu_init()
-{
+{ // should be called after defining gyroMode and accelMode
     Wire.begin();
     MPU_reg_write(MPU_POWER, 0);
     MPU_reg_write(GYRO_CONFIG, gyroMode);
@@ -65,6 +65,7 @@ float readAngle(char axes, bool reset)
     milliOld_mpu = milliNew_mpu;
     milliNew_mpu = millis();
     dt_mpu = (milliOld_mpu - milliNew_mpu) / 1000;
+    // TODO: Check if the below switch case is compilable using a string instead of a character
     switch (axes)
     {
     case 'z': // Yaw
@@ -99,4 +100,4 @@ inline float accel_read_z()
     return reading / accelConverter;
 }
 
-//TODO: add Functions to get the velocity and position.
+// TODO: add Functions to get the velocity and position.
