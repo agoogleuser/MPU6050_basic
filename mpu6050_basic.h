@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #ifndef MPU6050_BASIC_H
 #define MPU6050_BASIC_H
 
@@ -68,16 +67,9 @@
     #define accelConverter 16384
 #endif
 
-//====I2C (2-wire) interface
-/*
- *IMPORTANT NOTE: the I2C must be manually initialized in the arduino code
- *as a slave device using 'MPU_ADDRESS' as the slave address.
-*/ 
 //max frequency is 400KHz
 #define MPU_ADDRESS     0b1101000 
 #define MPU_SENSOR_ID   0x652
-//needs check: The LSB (A0) of the slave address is variable, can be 0 or 1 
-//depending on the input of AD0 pin.
 
 //====Functions
 void mpu_init();
