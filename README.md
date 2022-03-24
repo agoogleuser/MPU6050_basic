@@ -66,7 +66,7 @@ In my experience, The higher the range, the lower the error in `readAngle()` fun
 
 The Accelerometer also have four ranges you can choose from, As shown in the table below:
 
-|Range(m/s^2)|#define parameter|
+|Range(9.81 m/s^2)|#define parameter|
 |:-----:|:-----:|
 |±2|`pm2`|
 |±4|`pm4`|
