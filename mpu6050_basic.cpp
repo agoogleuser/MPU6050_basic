@@ -4,7 +4,7 @@
 
 static float milliOld_mpu = 0;
 static float milliNew_mpu = 0;
-static float dt = 0;
+static float dt_mpu = 0;
 
 //=======Read and Write Functions.
 void MPU_reg_write(uint8_t regAdr, uint8_t regData)
@@ -54,33 +54,58 @@ inline float gyro_read_z()
     return reading / gyroConverter;
 }
 // * Added Functions to read the rotation relative to initial starting position
+
+float integrate(float x, bool reset)
+{
+    /**
+     * @IMPORTANT: Due to this function is repeatedly used in multiple functions,
+     * I added a `reset` variable to reduce the conflict between other variables,
+     * and it's Your Job to use it correctly. For example If I wanted to get the
+     * reading of Velocity @ x , y and z next to each other, you have to
+     * reset the returned value to zero inside this function, or make it add up.
+     * something like this:
+     * Vx += readVelocity('x', true);
+     * Vy += readVelocity('y', true);
+     * Vz += readVelocity('z', true);
+     * And make sure the initial value for these variables are zero,
+     * or use a flagging system or something you prefer idc.
+     *
+     */
+    static float result = 0;
+
+    result = (reset == true) ? 0 : result;
+
+    milliOld_mpu = milliNew_mpu;
+    milliNew_mpu = millis();
+    dt_mpu = (milliOld_mpu - milliNew_mpu) / 1000;
+
+    result += x * dt_mpu;
+    return result;
+}
+
 float readAngle(char axes, bool reset)
 {
 // TODO: Test this compiler error if it works
 #if axes != 'x' || axex != 'y' || axes != 'z'
 #error "Wrong axes input. Correct input should be either 'x', 'y' or 'z'."
 #endif
-    static float yaw = 0;
-    yaw = (reset == true) ? 0 : yaw;
-    milliOld_mpu = milliNew_mpu;
-    milliNew_mpu = millis();
-    dt_mpu = (milliOld_mpu - milliNew_mpu) / 1000;
-    // TODO: Check if the below switch case is compilable using a string instead of a character
+    static float result = 0;
+    float reading;
+
     switch (axes)
     {
     case 'z': // Yaw
-        float reading = gyro_read_z();
+        sreading = gyro_read_z();
         break;
     case 'y': // Pitch
-        float reading = gyro_read_y();
+        sreading = gyro_read_y();
         break;
     case 'x': // Roll
-        float reading = gyro_read_x();
+        sreading = gyro_read_x();
         break;
     }
-    reading /= converter;
-    yaw += reading * (dt_mpu);
-    return yaw * 2; // For some reason The output here is correct if the case is pm1000.
+    result = integrate(reading, reset);
+    return result * 2; // For some reason The output here is correct if the case is pm1000.
 }
 
 //=======Accelerometer Reading.
@@ -95,9 +120,38 @@ inline float accel_read_y()
     return reading / accelConverter;
 }
 inline float accel_read_z()
-{
+{//This Should be througly tested, since it's the usual direction for earth's gravity.
     float reading = (float)MPU_reg_read(GYRO_ZOUT_H, 2);
     return reading / accelConverter;
 }
 
-// TODO: add Functions to get the velocity and position.
+// TODO: Test those Functions below.
+
+float readVelocity(char axes, bool reset)
+{
+    static float result = 0;
+    float reading;
+
+    switch (axes)
+    {
+    case 'z': // Yaw
+        reading = accel_read_z();
+        break;
+    case 'y': // Pitch
+        reading = accel_read_y();
+        break;
+    case 'x': // Roll
+        reading = accel_read_x();
+        break;
+    }
+    return integrate(reading, reset);
+}
+
+float readPosition(char axes, bool reset)
+{
+    static float result = 0;
+    float reading;
+
+    reading = readVelocity(axes, reset);
+    return integrate(reading, reset);
+}
