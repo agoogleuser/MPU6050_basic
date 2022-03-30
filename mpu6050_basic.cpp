@@ -86,8 +86,8 @@ float integrate(float x, bool reset)
 float readAngle(char axes, bool reset)
 {
 // TODO: Test this compiler error if it works
-#if axes != 'x' || axex != 'y' || axes != 'z'
-#error "Wrong axes input. Correct input should be either 'x', 'y' or 'z'."
+#if axes != 'x' && axex != 'y' && axes != 'z'
+#   error Wrong axes input: Correct input should be either 'x', 'y' or 'z'.
 #endif
     static float result = 0;
     float reading;
@@ -95,13 +95,13 @@ float readAngle(char axes, bool reset)
     switch (axes)
     {
     case 'z': // Yaw
-        sreading = gyro_read_z();
+        reading = gyro_read_z();
         break;
     case 'y': // Pitch
-        sreading = gyro_read_y();
+        reading = gyro_read_y();
         break;
     case 'x': // Roll
-        sreading = gyro_read_x();
+        reading = gyro_read_x();
         break;
     }
     result = integrate(reading, reset);
