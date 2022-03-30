@@ -1,60 +1,86 @@
-<<<<<<< HEAD
+
+/**
+ * @file basic_operation.ino
+ * @author Armia Khairy Fahmy (you@domain.com)
+ * @brief This example code demonestrates How to read data from the gyroscope and accelerometer
+ * @version 0.2
+ * @date 2022-03-30
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include <mpu6050_basic.h>
-#include <Wire.h>
+#define gyroMode pm1000
+#define accelMode pm4
 
-float gyro[3],accel[3];
-
-void setup() {
-  Wire.begin();       //Initialise the Arduino board as a master
-  Serial.begin(9600); //Initializing USB connection to PC for outputs.
-  gyro_init(pm2);
-  accel_init(pm250);
+float readings[15];
+void setup()
+{
+  mpu_init();
+  Serial.begin(9600);
 }
 
 void loop()
 {
-  gyro[0] = gyro_read_x();
-  gyro[1] = gyro_read_y();
-  gyro[2] = gyro_read_z();
+  int i=0;
+  readings[0]  = gyro_read_x();  
+  readings[1]  = gyro_read_y();  
+  readings[2]  = gyro_read_z();  
+  readings[3]  = accel_read_x();  
+  readings[4]  = accel_read_y();  
+  readings[5]  = accel_read_z();
+  readings[6] += readAngle('x', true);
+  readings[7] += readAngle('y', true);
+  readings[8] += readAngle('z', true);
+  readings[9] += readVelocity('x', true);
+  readings[10] += readVelocity('y', true);
+  readings[11] += readVelocity('z', true);
+  readings[12] += readPosition('x', true);
+  readings[13] += readPosition('y', true);
+  readings[14] += readPosition('z', true);
 
-  accel[0] = accel_read_x();
-  accel[1]= accel_read_y();
-  accel[2] = accel_read_z();
+ 
 
-  for (int i=0; i<3; i++)
+  //Gyroscope Raw Datas
+  for (i=0; i<3; i++)
   {
-    Serial.print(gyro[i]);
+    Serial.print(readings[i]);
     Serial.print("    ");
-    Serial.println(accel[i]);
   }
-=======
-#include <mpu6050_basic.h>
-#include <Wire.h>
 
-float gyro[3],accel[3];
-
-void setup() {
-  Wire.begin();       //Initialise the Arduino board as a master
-  Serial.begin(9600); //Initializing USB connection to PC for outputs.
-  gyro_init(pm2);
-  accel_init(pm250);
-}
-
-void loop()
-{
-  gyro[0] = gyro_read_x();
-  gyro[1] = gyro_read_y();
-  gyro[2] = gyro_read_z();
-
-  accel[0] = accel_read_x();
-  accel[1]= accel_read_y();
-  accel[2] = accel_read_z();
-
-  for (int i=0; i<3; i++)
+  Serial.println(" ");
+  //Accelerometer Raw datas
+  for (; i<6; i++)
   {
-    Serial.print(gyro[i]);
+    Serial.print(readings[i]);
     Serial.print("    ");
-    Serial.println(accel[i]);
   }
->>>>>>> 0426e32d10b5c2fc4fec789be19a95eda52d48d0
+  Serial.println(" ");
+
+  //Angle
+  for (; i<9; i++)
+  {
+    Serial.print(readings[i]);
+    Serial.print("    ");
+  }
+  Serial.println(" ");
+
+  //velocity
+  for (; i<12; i++)
+  {
+    Serial.print(readings[i]);
+    Serial.print("    ");
+  }
+  Serial.println(" ");
+ 
+  //Acceleration
+  for (; i<15; i++)
+  {
+    Serial.print(readings[i]);
+    Serial.print("    ");
+  }
+
+
+
+  Serial.println(" "); 
 }
