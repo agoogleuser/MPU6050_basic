@@ -40,15 +40,16 @@ void loop()
   readings[14] += readPosition('z', true);
 
  
-
+  Serial.print("Gyroscope Raw Data:\t");
   //Gyroscope Raw Datas
   for (i=0; i<3; i++)
   {
     Serial.print(readings[i]);
     Serial.print("    ");
   }
-
   Serial.println(" ");
+
+  Serial.print("Accelerometer Raw Data:\t");
   //Accelerometer Raw datas
   for (; i<6; i++)
   {
@@ -57,6 +58,7 @@ void loop()
   }
   Serial.println(" ");
 
+  Serial.print("Angle Data (deg):\t");
   //Angle
   for (; i<9; i++)
   {
@@ -66,6 +68,7 @@ void loop()
   Serial.println(" ");
 
   //velocity
+  Serial.print("Velocity Data (meter/sec):\t");
   for (; i<12; i++)
   {
     Serial.print(readings[i]);
@@ -73,14 +76,15 @@ void loop()
   }
   Serial.println(" ");
  
-  //Acceleration
+  //Position
+  Serial.print("Position Data (meter):\t");
   for (; i<15; i++)
   {
     Serial.print(readings[i]);
     Serial.print("    ");
   }
 
-
-
+  Serial.println(" "); 
+  Serial.println(" "); 
   Serial.println(" "); 
 }
