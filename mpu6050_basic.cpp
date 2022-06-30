@@ -85,10 +85,6 @@ float integrate(float x, bool reset)
 
 float readAngle(char axes, bool reset)
 {
-// TODO: Test this compiler error if it works
-#if axes != 'x' && axex != 'y' && axes != 'z'
-#   error Wrong axes input: Correct input should be either 'x', 'y' or 'z'.
-#endif
     static float result = 0;
     float reading;
 
