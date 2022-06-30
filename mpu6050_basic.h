@@ -84,3 +84,4 @@ float accel_read_y();
 float accel_read_z();
 float readVelocity(char axes, bool reset);
 float readPosition(char axes, bool reset);
+#endif
